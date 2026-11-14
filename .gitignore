@@ -1,0 +1,11 @@
+# Archivos generados al compilar Java
+*.class
+
+# Bases de datos SQLite creadas durante las pruebas
+*.db
+
+# Archivos del sistema macOS
+.DS_Store
+
+# Configuración local de VS Code
+.vscode/
