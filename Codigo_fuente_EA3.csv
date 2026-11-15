@@ -1,0 +1,96 @@
+archivo,linea,codigo
+ConexionBD.java,1,import java.sql.Connection;
+ConexionBD.java,2,import java.sql.DriverManager;
+ConexionBD.java,3,import java.sql.SQLException;
+ConexionBD.java,4,
+ConexionBD.java,5,/**
+ConexionBD.java,6, * Gestiona la validación de conexiones a bases de datos
+ConexionBD.java,7, * mediante la API JDBC de Java.
+ConexionBD.java,8, *
+ConexionBD.java,9, * La clase utiliza DriverManager para establecer la conexión
+ConexionBD.java,10, * y try-with-resources para garantizar su cierre.
+ConexionBD.java,11, */
+ConexionBD.java,12,public class ConexionBD {
+ConexionBD.java,13,"    public void probarConexion(String url, String usuario, char[] contrasena)"
+ConexionBD.java,14,"        throws ClassNotFoundException, SQLException {"
+ConexionBD.java,15,"            Class.forName(""org.sqlite.JDBC"");"
+ConexionBD.java,16,            try (Connection conexion = DriverManager.getConnection(
+ConexionBD.java,17,"                url, usuario, new String(contrasena))) {"
+ConexionBD.java,18,
+ConexionBD.java,19,                }
+ConexionBD.java,20,    }
+ConexionBD.java,21,}
+ConexionTester.java,1,import javax.swing.*; // paquete coin componenetes graficos swing
+ConexionTester.java,2,"import java.awt.*; // paquete con componentes graficos  awt. Usaremos clases accesibles BorderLayout, GridLayout y Color."
+ConexionTester.java,3,import java.sql.SQLException;
+ConexionTester.java,4,
+ConexionTester.java,5,/*aplicacion de escritorio para validar conexion JDBC */
+ConexionTester.java,6,public class ConexionTester extends JFrame {
+ConexionTester.java,7,
+ConexionTester.java,8,    /*ventana priincipal de la aplicacion */
+ConexionTester.java,9,    public ConexionTester() {
+ConexionTester.java,10,"        super(""Validación de Conexión JDBC"");"
+ConexionTester.java,11,
+ConexionTester.java,12,        /*configuracion de la ventana principal */
+ConexionTester.java,13,        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //this referencia al objeto ConexionTester q construimos
+ConexionTester.java,14,"        this.setSize(600, 400);"
+ConexionTester.java,15,        /*organizacion de la ventana con borderLayout */
+ConexionTester.java,16,        this.setLayout(new BorderLayout());
+ConexionTester.java,17,"        JPanel panelConfiguracion = new JPanel(new GridLayout(3, 2, 10, 10));//usamos 3 filas y 2 columnas para organizar los campos solicitados"
+ConexionTester.java,18,"        panelConfiguracion.add(new JLabel(""URL de conexion: ""));"
+ConexionTester.java,19,"        JTextField campoUrl = new JTextField(""jdbc:sqlite:inventario.db"");"
+ConexionTester.java,20,        panelConfiguracion.add(campoUrl);
+ConexionTester.java,21,"        panelConfiguracion.add(new JLabel(""Usuario: ""));"
+ConexionTester.java,22,        JTextField campoUsuario = new JTextField();
+ConexionTester.java,23,        panelConfiguracion.add(campoUsuario);
+ConexionTester.java,24,"        panelConfiguracion.add(new JLabel(""Contraseña: ""));//campo de texto para ingresar la contraseña"
+ConexionTester.java,25,        JPasswordField campoContrasena = new JPasswordField();//
+ConexionTester.java,26,        panelConfiguracion.add(campoContrasena);//
+ConexionTester.java,27,"        this.add(panelConfiguracion, BorderLayout.NORTH); //para mostrar la interfaz swing en la parte superior del JFrame"
+ConexionTester.java,28,        
+ConexionTester.java,29,        /*boton para iniciar la conexion JDBC */
+ConexionTester.java,30,"        JButton botonProbar = new JButton(""Probar conexion""); //crea el boton con ese texto"
+ConexionTester.java,31,"        this.add(botonProbar, BorderLayout.SOUTH); // muestra el boton en la parte inferior del JFrame"
+ConexionTester.java,32,
+ConexionTester.java,33,        /*area para mostrar resultados de la conexion*/
+ConexionTester.java,34,        JTextArea areaResultados = new JTextArea();
+ConexionTester.java,35,        areaResultados.setEditable(false);
+ConexionTester.java,36,        areaResultados.setLineWrap(true);
+ConexionTester.java,37,        areaResultados.setWrapStyleWord(true);
+ConexionTester.java,38,"        this.add(new JScrollPane(areaResultados), BorderLayout.CENTER); //para mostrar la interfaz swing en el centro del JFrame"
+ConexionTester.java,39,        
+ConexionTester.java,40,        //Recupera la url ingresada cuando el usuario presiona el boton
+ConexionTester.java,41,        botonProbar.addActionListener(e -> {
+ConexionTester.java,42,            
+ConexionTester.java,43,            String url = campoUrl.getText();
+ConexionTester.java,44,            String usuario = campoUsuario.getText();
+ConexionTester.java,45,            char[] contrasena = campoContrasena.getPassword();
+ConexionTester.java,46,            ConexionBD conexionBD =  new ConexionBD(); //crea un objeto para gestional la conexion JBDC
+ConexionTester.java,47,
+ConexionTester.java,48,            try {
+ConexionTester.java,49,"                    conexionBD.probarConexion(url, usuario, contrasena);"
+ConexionTester.java,50,                    areaResultados.setForeground(Color.GREEN);
+ConexionTester.java,51,"                    areaResultados.setText(""Conexion exitosa"");"
+ConexionTester.java,52,                } catch (ClassNotFoundException ex) {
+ConexionTester.java,53,                    areaResultados.setForeground(Color.RED);
+ConexionTester.java,54,"                    areaResultados.setText(""Driver JDBC no encontradi:\n"" + ex.getMessage());"
+ConexionTester.java,55,
+ConexionTester.java,56,                } catch (SQLException ex) {
+ConexionTester.java,57,                    areaResultados.setForeground(Color.RED);
+ConexionTester.java,58,                    areaResultados.setText(
+ConexionTester.java,59,"                        ""Error de conexión JDBC:\n"" +"
+ConexionTester.java,60,"                        ""Mensaje: "" + ex.getMessage() +"
+ConexionTester.java,61,"                        ""\nEstado SQL: "" + ex.getSQLState() +"
+ConexionTester.java,62,"                        ""\nCódigo de error: "" + ex.getErrorCode()"
+ConexionTester.java,63,                );
+ConexionTester.java,64,                }
+ConexionTester.java,65,        });
+ConexionTester.java,66,
+ConexionTester.java,67,        this.setVisible(true); //para hacer visible la ventana
+ConexionTester.java,68,    }
+ConexionTester.java,69,    public static void main(String[] args) {
+ConexionTester.java,70,        SwingUtilities.invokeLater(() -> new ConexionTester());
+ConexionTester.java,71,
+ConexionTester.java,72,    }
+ConexionTester.java,73,}
+ConexionTester.java,74,        
